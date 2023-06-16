@@ -17,6 +17,10 @@ class PostController extends Controller
         }
 
         $posts = Post::query()
+            // ->select([
+            //     'title',
+            //     'description',
+        // ])
             ->where(column: 'sequence', operator: '>', value: $lastPost)
             ->take(10)
             ->get();
@@ -24,6 +28,33 @@ class PostController extends Controller
         return response([
             'status' => 200,
             'data' => $posts,
+        ]);
+    }
+
+    public function store(Request $request): Response
+    {
+        $postId = Post::query()->max(column: 'sequence');
+
+        $postId = ! $postId ? 1 : $postId + 1;
+
+        Post::query()->create([
+            'title' => "This is Post {$postId}",
+            'description' => "post {$postId} description",
+        ]);
+
+        return response([
+            'status' => 200,
+            'message' => "Create Post {$postId} Success!",
+        ]);
+    }
+
+    public function show(string $id): Response
+    {
+        $post = Post::query()->find($id);
+
+        return response([
+            'status' => 200,
+            'data' => $post,
         ]);
     }
 }

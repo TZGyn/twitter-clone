@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id('sequence');
-            $table->uuid('id')->primary();
+            $table->uuid('id');
             $table->string('title');
-            $table->string('description')->nullable(true);
+            // $table->foreignId('user_id')->constrained(table: 'user', column: 'id');
+            $table->longText('description')->nullable(true);
             $table->timestamps();
         });
     }
