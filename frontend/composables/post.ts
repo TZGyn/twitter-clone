@@ -4,7 +4,7 @@ const PostValidator = z.object({
 	sequence: z.number(),
 	id: z.string(),
 	title: z.string(),
-	description: z.string().nullish(),
+	description: z.string(),
 	created_at: z.string(),
 	updated_at: z.string(),
 })
