@@ -4,6 +4,7 @@ definePageMeta({
 })
 
 import { z } from 'zod'
+
 type Posts = z.infer<typeof PostsValidator>
 
 const posts = ref<Posts>([])
@@ -29,6 +30,11 @@ const getPosts = async () => {
     lastPost.value = posts.value[posts.value.length - 1].sequence
 }
 
+const logout = async () => {
+    await userLogout()
+    useRouter().push('/login')
+}
+
 onMounted(() => {
     getPosts()
 })
@@ -36,9 +42,9 @@ onMounted(() => {
 
 <template>
     <div>
-        <!-- {{ posts }} -->
-        <div class="flex w-full items-center justify-center">
-            <div class="flex w-1/2 flex-col gap-4 px-4 pb-10 pt-2 2xl:w-1/3">
+        <Header />
+        <div class="mt-16 flex w-full items-center justify-center">
+            <div class="flex w-1/2 flex-col gap-4 px-4 pb-10 pt-4 2xl:w-1/3">
                 <div v-if="posts" v-for="post in posts">
                     <PostCard :title="post.title" :description="post.description" />
                 </div>
