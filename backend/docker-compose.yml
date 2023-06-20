@@ -1,37 +1,28 @@
+---
 version: 3.4
 services:
-    web:
-        container_name: twitter_clone_laravel
-        build:
-            context: ./docker
-            dockerfile: Dockerfile
-        depends_on:
-            - twitter_clone_mysql
-        volumes:
-            - .:/var/www/html:Z
-        ports:
-            - 8080:8080
-        networks:
-            - sail
-        depends_on:
-            - mysql
-    mysql:
-        container_name: twitter_clone_mysql
-        image: mysql
-        restart: always
-        environment:
-            MYSQL_DATABASE: twitter
-            MYSQL_ALLOW_EMPTY_PASSWORD: 1
-        ports:
-            - 3306:3306
-        volumes:
-            - dbdata:/var/lib/mysql
-            - ./docker/mysqld.conf:/etc/mysql/my.cnf
-        networks:
-            - sail
+  web:
+    container_name: twitter_clone_laravel
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    volumes: [.:/var/www/html:Z]
+    ports: [8080:8080]
+    networks: [sail]
+    depends_on: [mysql]
+  mysql:
+    container_name: twitter_clone_mysql
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: twitter
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports: [3306:3306]
+    volumes: [dbdata:/var/lib/mysql, ./docker/mysqld.conf:/etc/mysql/my.cnf]
+    networks: [sail]
 networks:
   sail:
     driver: bridge
 volumes:
-    dbdata:
-      driver: local
+  dbdata:
+    driver: local
