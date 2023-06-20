@@ -44,14 +44,13 @@ watch(
         <div
             class="flex w-96 flex-col items-center justify-center gap-2 rounded-xl border border-lightgray bg-secondary p-6">
             <label class="mt-2 w-full"> Email </label>
-            <input type="text" v-model="userCredential.email" class="w-full rounded-md border border-lightgray p-2" />
+            <input type="text" v-model="userCredential.email" class="w-full rounded-md" />
             <span v-if="errors.email" class="w-full text-red-400">
                 {{ errors.email }}
             </span>
 
             <label class="mt-2 w-full"> Password </label>
-            <input type="password" v-model="userCredential.password"
-                class="w-full rounded-md border border-lightgray p-2" />
+            <input type="password" v-model="userCredential.password" class="w-full rounded-md" />
             <span v-if="errors.password" class="w-full text-red-400">
                 {{ errors.password }}
             </span>
