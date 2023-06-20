@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -77,5 +78,32 @@ class PostController extends Controller
             ]
         );
     }
+
+    public function userPosts(User $user, Request $request): Response
+    {
+        $request->validate(
+            [
+                'lastUserPost' => 'required|integer',
+            ]
+        );
+
+        $lastUserPost = 0;
+
+        if ($request->lastUserPost) {
+            $lastUserPost = $request->lastUserPost;
+        }
+
+        $userPosts = $user->posts()
+            ->getQuery()
+            ->where(column: 'sequence', operator: '>', value: $lastUserPost)
+            ->take(10)
+            ->get();
+
+        return response(
+            [
+                'status' => 200,
+                'data' => $userPosts,
+            ]
+        );
     }
 }
