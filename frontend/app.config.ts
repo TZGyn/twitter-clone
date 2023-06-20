@@ -7,6 +7,7 @@ export default defineAppConfig({
             loading: 'svg-spinners:90-ring-with-bg',
             twitter: 'logos:twitter',
             github: 'mdi:github',
+            plus: 'mdi:plus',
         },
     },
 })

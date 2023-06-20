@@ -5,13 +5,17 @@
 html,
 body,
 #__nuxt {
-	@apply text-light h-full w-full bg-primary;
+	@apply h-full w-full bg-primary text-light;
 }
 
 input {
-	@apply bg-darkgray outline-none focus:outline-none;
+	@apply border border-lightgray bg-darkgray p-2 outline-none focus:outline-none;
 }
 
 textarea {
-	@apply bg-darkgray outline-none focus:outline-none;
+	@apply resize-none bg-transparent py-4 outline-none focus:outline-none;
+}
+
+textarea::placeholder {
+	@apply text-[#71767b];
 }
