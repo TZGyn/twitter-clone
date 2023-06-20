@@ -5,9 +5,7 @@ definePageMeta({
 
 import { z } from 'zod'
 
-type Posts = z.infer<typeof PostsValidator>
-
-const posts = ref<Posts>([])
+const posts = usePosts()
 const lastPost = ref<Number>(0)
 
 const responseValidator = z.object({
