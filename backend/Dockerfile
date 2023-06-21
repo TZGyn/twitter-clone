@@ -21,7 +21,7 @@ RUN apt-get update \
        php8.2-memcached php8.2-pcov php8.2-xdebug \
     && curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
+
 EXPOSE 8080
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
-
+CMD ["/bin/bash", "-c", "php artisan migrate && php artisan serve --host=0.0.0.0"]

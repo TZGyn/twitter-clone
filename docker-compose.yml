@@ -1,0 +1,37 @@
+---
+version: 1.0
+services:
+  nuxt:
+    container_name: twitter_clone_nuxt
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes: [./frontend:/twitter:Z]
+    ports: [3000:3000, 24678:24678]
+    networks: [twitter]
+  laravel:
+    container_name: twitter_clone_laravel
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes: [./backend:/var/www/html:Z]
+    ports: [8080:8080]
+    networks: [twitter]
+    depends_on: [mysql]
+  mysql:
+    container_name: twitter_clone_mysql
+    image: mysql
+    environment:
+      MYSQL_DATABASE: twitter
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports: [3306:3306]
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./backend/mysqld.conf:/etc/mysql/my.cnf
+    networks: [twitter]
+networks:
+  twitter:
+    driver: bridge
+volumes:
+  dbdata:
+    driver: local
