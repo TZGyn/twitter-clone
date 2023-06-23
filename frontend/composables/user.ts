@@ -23,6 +23,23 @@ const userLogin = async (email: String, password: String) => {
     await getUser()
 }
 
+const newUserSchema = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    password: z.string().min(6),
+    password_confirmation: z.string().min(6),
+})
+
+const userSignup = async (data: unknown) => {
+    const newUser = newUserSchema.safeParse(data)
+
+    if (!newUser.success) return newUser.error.format()
+
+    await request.post('/register', newUser.data)
+
+    await getUser()
+}
+
 const getUser = async () => {
     await request
         .get('/api/user')
@@ -43,4 +60,4 @@ const userLogout = async () => {
 
 const useUser = () => useState<String>('user', () => '')
 
-export { userLogin, useUser, getUser, userLogout }
+export { userLogin, useUser, getUser, userLogout, userSignup }
