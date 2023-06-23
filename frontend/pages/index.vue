@@ -6,27 +6,10 @@ definePageMeta({
 import { z } from 'zod'
 
 const posts = usePosts()
-const lastPost = ref<Number>(0)
 const openCreatePostModal = ref<Boolean>(false)
 
-const responseValidator = z.object({
-    status: z.number(),
-    data: z.unknown().array(),
-})
-
 const getPosts = async () => {
-    const data = await request.get('/api/posts', {
-        params: { lastPost: lastPost.value },
-    })
-
-    console.log(data)
-
-    const response = responseValidator.safeParse(data.data)
-
-    if (!response.success) return
-
-    posts.value = [...posts.value, ...parsePosts(response.data.data)]
-    lastPost.value = posts.value[posts.value.length - 1].sequence
+    await fetchPosts()
 }
 
 const logout = async () => {
@@ -56,7 +39,7 @@ onMounted(() => {
                 <div v-if="posts" v-for="post in posts">
                     <PostCard :title="post.title" :description="post.description" />
                 </div>
-                <button @click="getPosts()">More {{ lastPost }}</button>
+                <button @click="getPosts()"> More </button>
             </div>
         </div>
         <button @click="createPost()"

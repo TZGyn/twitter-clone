@@ -35,7 +35,38 @@ const createNewPost = async (data: unknown) => {
 
     const res = await request.post('/api/posts', parsedNewPost.data)
 
-    console.log(res)
+    await fetchPosts()
 }
 
-export { parsePost, parsePosts, PostValidator, createNewPost, usePosts }
+const responseValidator = z.object({
+    status: z.number(),
+    data: z.unknown().array(),
+})
+
+const fetchPosts = async (refresh: Boolean = false) => {
+    const posts = usePosts()
+    const lastPost = refresh
+        ? 0
+        : posts.value.length
+            ? posts.value[posts.value.length - 1].sequence
+            : 0
+
+    const data = await request.get('/api/posts', {
+        params: { lastPost: lastPost },
+    })
+
+    const response = responseValidator.safeParse(data.data)
+
+    if (!response.success) return
+
+    posts.value = [...posts.value, ...parsePosts(response.data.data)]
+}
+
+export {
+    parsePost,
+    parsePosts,
+    PostValidator,
+    createNewPost,
+    usePosts,
+    fetchPosts,
+}
