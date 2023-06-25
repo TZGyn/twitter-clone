@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('sequence');
             $table->uuid('id');
             $table->string('title');
-            $table->foreignId('user_id')->constrained(table: 'users', column: 'id');
+            $table->foreignUuid('user_id')->constrained(table: 'users', column: 'id');
             $table->longText('description')->nullable(true);
             $table->timestamps();
         });
