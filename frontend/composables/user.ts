@@ -17,8 +17,8 @@ const userLogin = async (email: String, password: String) => {
 
     if (!user.success) return user.error.format()
 
-    await request.get('/sanctum/csrf-cookie')
-    await request.post('/login', user.data)
+    await useCustomFetch('/sanctum/csrf-cookie')
+    await useCustomFetch('/login', { method: 'POST', body: user.data })
 
     await getUser()
 }
@@ -35,29 +35,26 @@ const userSignup = async (data: unknown) => {
 
     if (!newUser.success) return newUser.error.format()
 
-    await request.post('/register', newUser.data)
+    await useCustomFetch('/register', { method: 'POST', body: newUser.data })
 
     await getUser()
 }
 
 const getUser = async () => {
-    await request
-        .get('/api/user')
-        .then(({ data }) => {
-            const parsed = loggedInUserSchema.safeParse(data)
-            if (!parsed.success) return
-            useUser().value = parsed.data.name
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+    const { data, error } = await useCustomFetch('/api/user')
+
+    if (error.value) return
+
+    const parsed = loggedInUserSchema.safeParse(data.value)
+    if (!parsed.success) return
+    useUser().value = parsed.data.name
 }
 
 const userLogout = async () => {
-    await request.post('/logout')
+    await useCustomFetch('/logout', { method: 'POST' })
     useUser().value = ''
 }
 
 const useUser = () => useState<String>('user', () => '')
 
-export { userLogin, useUser, getUser, userLogout, userSignup }
+export { getUser, userLogin, userLogout, userSignup, useUser }

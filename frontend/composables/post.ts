@@ -33,7 +33,10 @@ const createNewPost = async (data: unknown) => {
 
     if (!parsedNewPost.success) return
 
-    const res = await request.post('/api/posts', parsedNewPost.data)
+    const { data: post } = await useCustomFetch('/api/posts', {
+        method: 'POST',
+        body: parsedNewPost.data,
+    })
 
     await fetchPosts()
 }
@@ -51,11 +54,11 @@ const fetchPosts = async (refresh: Boolean = false) => {
             ? posts.value[posts.value.length - 1].sequence
             : 0
 
-    const data = await request.get('/api/posts', {
+    const { data } = await useCustomFetch('/api/posts', {
         params: { lastPost: lastPost },
     })
 
-    const response = responseValidator.safeParse(data.data)
+    const response = responseValidator.safeParse(data.value)
 
     if (!response.success) return
 
@@ -63,10 +66,10 @@ const fetchPosts = async (refresh: Boolean = false) => {
 }
 
 export {
+    createNewPost,
+    fetchPosts,
     parsePost,
     parsePosts,
     PostValidator,
-    createNewPost,
     usePosts,
-    fetchPosts,
 }
