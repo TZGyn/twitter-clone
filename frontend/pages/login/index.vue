@@ -53,7 +53,7 @@ watch(
 </script>
 
 <template>
-    <div class="absolute flex h-screen w-screen items-center justify-center">
+    <div class="absolute flex h-screen w-screen items-center justify-center p-4">
         <div
             class="flex w-96 flex-col items-center justify-center gap-2 rounded-xl border border-lightgray bg-secondary p-6">
             <label v-if="isSignUp" class="mt-2 w-full">

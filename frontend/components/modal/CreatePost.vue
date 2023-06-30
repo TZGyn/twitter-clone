@@ -26,7 +26,7 @@ const submitPost = async () => {
     closeModal()
 }
 
-onClickOutside(modal, (event) => {
+onClickOutside(modal, () => {
     closeModal()
 })
 
@@ -41,7 +41,7 @@ watch(
 <template>
     <div class="fixed top-0 flex h-screen w-screen justify-center">
         <div ref="modal"
-            class="relative mt-20 flex h-fit max-h-[1000px] min-h-[500px] w-2/3 flex-col items-center border border-lightgray bg-secondary p-4">
+            class="relative mx-4 mt-20 flex h-96 w-full max-w-3xl flex-col items-center border border-lightgray bg-secondary p-4">
             <label class="mt-2 w-full"> Title </label>
             <input type="text" v-model="newPost.title" class="mt-2 w-full rounded-md" />
 

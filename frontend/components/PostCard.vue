@@ -1,7 +1,7 @@
 <script setup lang="ts">
 type Post = {
     title: String
-    description: String | null | undefined
+    description: String
 }
 
 const props = defineProps<Post>()

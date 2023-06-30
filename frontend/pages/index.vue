@@ -3,18 +3,11 @@ definePageMeta({
     middleware: ['auth'],
 })
 
-import { z } from 'zod'
-
 const posts = usePosts()
 const openCreatePostModal = ref<Boolean>(false)
 
 const getPosts = async () => {
     await fetchPosts()
-}
-
-const logout = async () => {
-    await userLogout()
-    useRouter().push('/login')
 }
 
 const toggleCreatePostModal = () => {
@@ -34,8 +27,7 @@ onMounted(() => {
     <div>
         <Header />
         <div class="mt-16 flex w-full items-center justify-center">
-            <div class="flex w-1/2 flex-col gap-4 px-4 pb-10 pt-4 2xl:w-1/3">
-                <button @click="getUserPosts()"> User Posts </button>
+            <div class="flex w-full max-w-2xl flex-col gap-4 px-4 pb-10 pt-4">
                 <div v-if="posts" v-for="post in posts">
                     <PostCard :title="post.title" :description="post.description" />
                 </div>
@@ -43,7 +35,7 @@ onMounted(() => {
             </div>
         </div>
         <button @click="createPost()"
-            class="fixed bottom-12 right-12 flex items-center justify-center gap-2 rounded-full bg-blue-500 p-4">
+            class="fixed bottom-6 right-6 flex items-center justify-center gap-2 rounded-full bg-blue-500 p-4">
             <Icon name="plus" />
             Create Post
         </button>
