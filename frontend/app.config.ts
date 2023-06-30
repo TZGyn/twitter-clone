@@ -8,6 +8,7 @@ export default defineAppConfig({
             twitter: 'logos:twitter',
             github: 'mdi:github',
             plus: 'mdi:plus',
+            user: 'mdi:account-circle',
         },
     },
 })
