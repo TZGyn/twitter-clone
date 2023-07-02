@@ -14,15 +14,25 @@ class PostController extends Controller
         $request->validate(
             [
                 'lastPost' => 'required|integer',
+                'firstPost' => 'required|integer',
+                'order' => 'required|string|in:new,old',
             ]
         );
 
         $lastPost = $request->lastPost;
+        $firstPost = $request->firstPost;
 
-        $posts = Post::query()
-            ->where(column: 'sequence', operator: '>', value: $lastPost)
-            ->take(10)
-            ->get();
+        $postsQuery = Post::query()->with('user')->orderByDesc(column: 'sequence');
+
+        if ($request->order == 'new') {
+            $postsQuery->where(column: 'sequence', operator: '>', value: $firstPost);
+        }
+
+        if ($request->order == 'old' && $lastPost != 0) {
+            $postsQuery->where(column: 'sequence', operator: '<', value: $lastPost);
+        }
+
+        $posts = $postsQuery->take(10)->get();
 
         return response(
             [

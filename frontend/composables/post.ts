@@ -5,8 +5,11 @@ const PostValidator = z.object({
     id: z.string(),
     title: z.string(),
     description: z.string(),
-    created_at: z.string(),
+    created_at: z.string().datetime(),
     updated_at: z.string(),
+    user: z.object({
+        name: z.string(),
+    }),
 })
 
 const newPostValidator = z.object({

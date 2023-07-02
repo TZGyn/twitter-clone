@@ -27,9 +27,10 @@ onMounted(() => {
     <div>
         <Header />
         <div class="mt-16 flex w-full items-center justify-center">
-            <div class="flex w-full max-w-2xl flex-col gap-4 px-4 pb-10 pt-4">
+            <div class="flex w-full max-w-2xl flex-col gap-4 px-4 pb-16 pt-4">
                 <div v-if="posts" v-for="post in posts">
-                    <PostCard :title="post.title" :description="post.description" />
+                    <PostCard :title="post.title" :description="post.description" :created_at="post.created_at"
+                        :user="post.user" />
                 </div>
                 <button @click="getPosts()"> More </button>
             </div>
