@@ -36,12 +36,12 @@ const createNewPost = async (data: unknown) => {
 
     if (!parsedNewPost.success) return
 
-    const { data: post } = await useCustomFetch('/api/posts', {
+    await useCustomFetch('/api/posts', {
         method: 'POST',
         body: parsedNewPost.data,
     })
 
-    await fetchPosts()
+    await fetchPosts('new')
 }
 
 const responseValidator = z.object({
@@ -49,23 +49,31 @@ const responseValidator = z.object({
     data: z.unknown().array(),
 })
 
-const fetchPosts = async (refresh: Boolean = false) => {
+const fetchPosts = async (
+    order: 'new' | 'old' = 'old',
+    refresh: Boolean = false
+) => {
     const posts = usePosts()
     const lastPost = refresh
         ? 0
         : posts.value.length
             ? posts.value[posts.value.length - 1].sequence
             : 0
+    const firstPost = posts.value.length ? posts.value[0].sequence : 0
 
     const { data } = await useCustomFetch('/api/posts', {
-        params: { lastPost: lastPost },
+        params: { lastPost: lastPost, firstPost: firstPost, order: order },
     })
 
     const response = responseValidator.safeParse(data.value)
 
     if (!response.success) return
 
-    posts.value = [...posts.value, ...parsePosts(response.data.data)]
+    if (order == 'old') {
+        posts.value = [...posts.value, ...parsePosts(response.data.data)]
+    } else {
+        posts.value = [...parsePosts(response.data.data), ...posts.value]
+    }
 }
 
 export {
