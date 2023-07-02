@@ -9,8 +9,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            api: 'http://dev.local:8000/api',
-            url: 'http://dev.local:8000',
+            laravelApi: process.env.LARAVEL_API || 'http://localhost:8000',
         },
     },
     ssr: false,

@@ -1,5 +1,7 @@
 import type { UseFetchOptions } from 'nuxt/app'
 
+const config = useRuntimeConfig()
+
 const useCustomFetch = async <T>(
     path: string,
     options: UseFetchOptions<T> = {}
@@ -11,7 +13,7 @@ const useCustomFetch = async <T>(
         headers['X-XSRF-TOKEN'] = token.value as string
     }
 
-    return useFetch('http://localhost:8080' + path, {
+    return useFetch(config.public.laravelApi + path, {
         credentials: 'include',
         watch: false,
         ...options,
