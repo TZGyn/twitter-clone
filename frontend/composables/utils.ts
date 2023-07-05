@@ -1,5 +1,5 @@
 const openUrl = (url: string) => {
-    window.open(url, '_blank')
+	window.open(url, '_blank')
 }
 
 export { openUrl }
