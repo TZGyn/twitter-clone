@@ -5,7 +5,7 @@
 html,
 body,
 #__nuxt {
-	@apply h-full w-full bg-primary text-light;
+	@apply h-full w-full bg-primary text-[15px] text-light;
 }
 
 input {
