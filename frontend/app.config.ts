@@ -11,6 +11,10 @@ export default defineAppConfig({
 			user: 'mdi:account-circle',
 			home: 'material-symbols:home-rounded',
 			search: 'material-symbols:search',
+			bell: 'material-symbols:notifications-outline',
+			mail: 'material-symbols:mail-outline',
+			back: 'material-symbols:arrow-back',
+			settings: 'material-symbols:settings',
 		},
 	},
 })
