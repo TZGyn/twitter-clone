@@ -15,10 +15,15 @@ const userLogin = async (email: String, password: String) => {
 
 	const user = userSchema.safeParse({ email, password })
 
-	if (!user.success) return user.error.format()
+	if (!user.success) return user.error.flatten().fieldErrors
 
 	await useCustomFetch('/sanctum/csrf-cookie')
-	await useCustomFetch('/login', { method: 'POST', body: user.data })
+	const { error } = await useCustomFetch('/login', {
+		method: 'POST',
+		body: user.data,
+	})
+
+	if (error) return { user: 'Invalid User' }
 
 	await getUser()
 }
@@ -35,7 +40,12 @@ const userSignup = async (data: unknown) => {
 
 	if (!newUser.success) return newUser.error.format()
 
-	await useCustomFetch('/register', { method: 'POST', body: newUser.data })
+	const { error } = await useCustomFetch('/register', {
+		method: 'POST',
+		body: newUser.data,
+	})
+
+	if (error) return error
 
 	await getUser()
 }
