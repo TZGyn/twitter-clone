@@ -22,20 +22,20 @@ const logout = async () => {
 
 type UserOption = {
 	title: string
-	function: () => void
+	onClick: () => void
 }
 
 const userOptions: Array<UserOption> = [
 	{
 		title: 'Github',
-		function: () => {
+		onClick: () => {
 			openUrl('https://github.com/TZGyn')
 			toggleUserOptions()
 		},
 	},
 	{
 		title: 'Log Out',
-		function: async () => {
+		onClick: async () => {
 			await logout()
 			toggleUserOptions()
 		},
@@ -59,7 +59,7 @@ const userOptions: Array<UserOption> = [
 				<div
 					v-for="userOption in userOptions"
 					class="w-full min-w-[120px] border border-lightgray p-4 text-center hover:bg-lightgray"
-					@click="userOption.function()">
+					@click="userOption.onClick()">
 					{{ userOption.title }}
 				</div>
 			</div>
