@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('id');
             $table->foreignUuid('user_id')->constrained(table: 'users', column: 'id');
             $table->longText('description')->nullable(true);
+            $table->integer('like_count')->default(0);
             $table->timestamps();
         });
     }

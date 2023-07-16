@@ -9,6 +9,7 @@ const PostValidator = z.object({
 	user: z.object({
 		name: z.string(),
 	}),
+	like_count: z.number(),
 })
 
 const newPostValidator = z.object({
