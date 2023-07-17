@@ -9,6 +9,8 @@ const loggedInUserSchema = z.object({
 	name: z.string(),
 })
 
+const useUser = () => useState<String>('user', () => '')
+
 const userLogin = async (email: String, password: String) => {
 	await getUser()
 	if (useUser().value) return
@@ -23,7 +25,7 @@ const userLogin = async (email: String, password: String) => {
 		body: user.data,
 	})
 
-	if (error) return { user: 'Invalid User' }
+	if (error.value) return { user: 'Invalid User' }
 
 	await getUser()
 }
@@ -45,7 +47,7 @@ const userSignup = async (data: unknown) => {
 		body: newUser.data,
 	})
 
-	if (error) return error
+	if (error.value) return error
 
 	await getUser()
 }
@@ -65,6 +67,9 @@ const userLogout = async () => {
 	useUser().value = ''
 }
 
-const useUser = () => useState<String>('user', () => '')
+const userDelete = async () => {
+	await useCustomFetch('/user', { method: 'DELETE' })
+	useUser().value = ''
+}
 
-export { getUser, userLogin, userLogout, userSignup, useUser }
+export { getUser, userDelete, userLogin, userLogout, userSignup, useUser }
