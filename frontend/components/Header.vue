@@ -40,6 +40,12 @@ const userOptions: Array<UserOption> = [
 			toggleUserOptions()
 		},
 	},
+	{
+		title: 'Profile',
+		onClick: () => {
+			useRouter().push('/profile')
+		},
+	},
 ]
 </script>
 
