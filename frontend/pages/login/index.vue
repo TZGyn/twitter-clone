@@ -48,6 +48,8 @@ const toggleSignup = () => {
 }
 
 const signup = async () => {
+	resetErrors()
+
 	isSigningIn.value = true
 	const error = await userSignup(userCredential)
 	setTimeout(() => (isSigningIn.value = false), 500)
@@ -66,7 +68,11 @@ watch(
 		class="absolute flex h-screen w-screen items-center justify-center p-4">
 		<div
 			@keyup.enter="isSignUp ? signup() : login()"
-			class="flex w-96 flex-col items-center justify-center gap-2 rounded-xl border border-lightgray bg-secondary p-6">
+			class="flex w-96 flex-col items-center justify-center gap-2 rounded-xl p-6">
+			<Icon
+				name="twitter"
+				size="64"
+				class="mb-8 text-accent" />
 			<label
 				v-if="isSignUp"
 				class="mt-2 w-full">
@@ -117,18 +123,20 @@ watch(
 				{{ errors.user }}
 			</div>
 
+			<div class="mt-12"></div>
+
 			<button
 				@click="isSignUp ? signup() : login()"
-				class="mt-6 flex gap-2 rounded-full border border-lightgray bg-blue-500 px-6 py-2">
+				class="flex gap-2 rounded-full border border-lightgray bg-accent px-6 py-2">
 				<Icon
 					v-if="isSigningIn"
 					name="loading" />
-				<div> {{ isSignUp ? 'Sign up' : 'Sign in' }} </div>
+				<div>{{ isSignUp ? 'Sign up' : 'Sign in' }}</div>
 			</button>
 
 			<div
 				@click="toggleSignup()"
-				class="mt-4 text-blue-500 underline">
+				class="mt-4 text-accent underline">
 				{{
 					isSignUp
 						? 'Already have an account? Sign in'
