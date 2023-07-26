@@ -6,9 +6,12 @@ definePageMeta({
 const posts = usePosts()
 const openCreatePostModal = ref<Boolean>(false)
 const pageType = ref<'following' | 'for you'>('for you')
+const isLoading = ref<Boolean>(false)
 
-const getPosts = async () => {
-	await fetchPosts()
+const getPosts = async (order?: 'new' | 'old') => {
+	isLoading.value = true
+	await fetchPosts(order)
+	isLoading.value = false
 }
 
 const toggleCreatePostModal = () => {
@@ -24,13 +27,26 @@ const createPost = () => {
 	// toggleCreatePostModal()
 }
 
+const postsView = ref<HTMLElement | null>(null)
+
+useInfiniteScroll(
+	postsView,
+	() => {
+		getPosts()
+	},
+	{
+		distance: 0,
+		interval: 7000,
+	}
+)
+
 onMounted(() => {
 	getPosts()
 })
 </script>
 
 <template>
-	<div>
+	<div class="h-screen overflow-hidden">
 		<Header />
 		<div class="sticky top-0 flex bg-primary text-center">
 			<div
@@ -72,14 +88,20 @@ onMounted(() => {
 				</div>
 			</div>
 		</div>
-		<div class="mb-16 flex w-full items-center justify-center">
-			<div class="flex w-full max-w-2xl flex-col">
-				<div
-					v-if="posts"
-					v-for="post in posts">
-					<PostCard :post="post" />
+		<div class="flex w-full items-center justify-center">
+			<div
+				ref="postsView"
+				class="flex h-screen w-full max-w-2xl flex-col items-center overflow-scroll pb-48">
+				<PostCard
+					v-for="post in posts"
+					:post="post" />
+				<div class="mt-4">
+					<Icon
+						v-if="isLoading"
+						name="loading"
+						size="32"
+						class="text-accent" />
 				</div>
-				<button @click="getPosts()">More</button>
 			</div>
 		</div>
 		<button
@@ -93,3 +115,16 @@ onMounted(() => {
 		<BottomNavigationBar />
 	</div>
 </template>
+
+<style>
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hidden::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hidden {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+</style>
