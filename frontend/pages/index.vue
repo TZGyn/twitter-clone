@@ -47,6 +47,7 @@ onMounted(() => {
 
 <template>
 	<div class="h-screen overflow-hidden">
+		<Sidebar />
 		<Header />
 		<div class="sticky top-0 flex bg-primary text-center">
 			<div
