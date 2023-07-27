@@ -3,6 +3,7 @@ const isSidebarActive = useSidebar()
 const user = useUser()
 
 const sidebar = ref<HTMLElement | undefined>()
+const openSetting = ref<Boolean>(false)
 
 type UserOption = {
 	title: string
@@ -79,6 +80,25 @@ onClickOutside(sidebar, () => {
 					<div>
 						{{ userOption.title }}
 					</div>
+				</div>
+			</div>
+			<div class="mt-4 flex flex-col border-t-2 border-t-lightgray">
+				<div
+					@click="openSetting = !openSetting"
+					class="flex justify-between p-4 hover:cursor-pointer hover:bg-lightgray">
+					<div>Settings</div>
+					<Icon
+						name="mdi:chevron-up"
+						class="transition-transform"
+						:class="{
+							'rotate-0': !openSetting,
+							'-rotate-180': openSetting,
+						}" />
+				</div>
+				<div
+					v-if="openSetting"
+					class="px-4 py-2 hover:cursor-pointer hover:bg-lightgray">
+					Delete Account
 				</div>
 			</div>
 		</div>
