@@ -29,9 +29,7 @@ const userOptions: Array<UserOption> = [
 	{
 		title: 'Profile',
 		icon: 'user',
-		onClick: () => {
-			useRouter().push('/profile')
-		},
+		onClick: () => openUserProfile(),
 	},
 ]
 
@@ -58,17 +56,21 @@ onClickOutside(sidebar, () => {
 						class="hover:cursor-pointer" />
 				</div>
 				<Icon
+					@click="openUserProfile()"
 					name="user"
 					size="36"
-					ref="userIcon" />
-				<div>
+					ref="userIcon"
+					class="hover:cursor-pointer" />
+				<div
+					@click="openUserProfile()"
+					class="hover:cursor-pointer hover:underline">
 					{{ user }}
 				</div>
 			</div>
 			<div ref="userOptionsCard">
 				<div
 					v-for="userOption in userOptions"
-					class="flex w-full items-center p-4 text-xl hover:bg-lightgray"
+					class="flex w-full items-center p-4 text-xl hover:cursor-pointer hover:bg-lightgray"
 					@click="userOption.onClick()">
 					<Icon
 						v-if="userOption.icon"
