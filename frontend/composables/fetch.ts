@@ -6,7 +6,9 @@ const useCustomFetch = async <T>(
 	path: string,
 	options: UseFetchOptions<T> = {}
 ) => {
-	let headers: any = {}
+	let headers: any = {
+		referer: config.public.frontend_url,
+	}
 	const token = useCookie('XSRF-TOKEN')
 
 	if (token.value) {
