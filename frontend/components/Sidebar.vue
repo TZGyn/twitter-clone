@@ -8,6 +8,7 @@ const openSetting = ref<Boolean>(false)
 type UserOption = {
 	title: string
 	icon?: string
+	class?: string
 	onClick: () => void
 }
 
@@ -20,17 +21,18 @@ const userOptions: Array<UserOption> = [
 		},
 	},
 	{
+		title: 'Profile',
+		icon: 'user',
+		onClick: () => openUserProfile(),
+	},
+	{
 		title: 'Log Out',
 		icon: 'mdi:logout',
+		class: 'hover:text-red-500',
 		onClick: async () => {
 			await userLogout()
 			useRouter().push('/login')
 		},
-	},
-	{
-		title: 'Profile',
-		icon: 'user',
-		onClick: () => openUserProfile(),
 	},
 ]
 
@@ -72,6 +74,7 @@ onClickOutside(sidebar, () => {
 				<div
 					v-for="userOption in userOptions"
 					class="flex w-full items-center p-4 text-xl hover:cursor-pointer hover:bg-lightgray"
+					:class="userOption.class"
 					@click="userOption.onClick()">
 					<Icon
 						v-if="userOption.icon"
